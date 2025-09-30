@@ -1,10 +1,11 @@
 from PIL import Image 
 import streamlit as st
-import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as sns
+from utils.modelisation import display_complete_modeling
+import numpy as np
+import pandas as pd
 import os
+import seaborn as sns
 
 st.title("Deep X-Vision Project")
 st.sidebar.title("Sommaire")
@@ -131,7 +132,7 @@ if page == pages[1]:
         with cols[i]:
             st.subheader(class_name)
             # Remplacez par le chemin réel de vos images
-            img_path = f"images/{class_name}/{filename.lower()}-1.png"
+            img_path = f"images/{class_name}/{filename}-1.png"
             if os.path.exists(img_path):
                 img = Image.open(img_path)
                 st.image(img, caption=f"{class_name} (299x299)", use_container_width=True)
@@ -214,6 +215,8 @@ if page == pages[2]:
 
 if page == pages[3]:
     st.write("### Modelisation")
+
+    display_complete_modeling()
 
 if page == pages[4]:
     st.write("### Resultat")
