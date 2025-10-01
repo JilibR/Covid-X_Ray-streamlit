@@ -219,7 +219,7 @@ if page == pages[3]:
     display_complete_modeling()
 
 if page == pages[4]:
-    st.write("### Resultat")
+    st.write("### Résultat Gilles 2025 10 01") 
 
 if page == pages[5]:
     st.write("### Analyse et Conclusion")
