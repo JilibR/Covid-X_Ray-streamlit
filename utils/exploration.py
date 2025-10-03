@@ -65,7 +65,7 @@ def display_exploration():
         with cols[i]:
             st.subheader(class_name)
             # Remplacez par le chemin réel de vos images
-            img_path = f"../images/{class_name}/{filename}-1.png"
+            img_path = f"images/{class_name}/{filename}-1.png"
             if os.path.exists(img_path):
                 img = Image.open(img_path)
                 st.image(img, caption=f"{class_name} (299x299)", use_container_width=True)
