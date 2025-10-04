@@ -9,7 +9,7 @@ import seaborn as sns
 
 st.title("Deep X-Vision Project")
 st.sidebar.title("Sommaire")
-pages=["Introduction", "Exploration", "Preprocessing", "Modélisation", "Resultat", "Analyse et Conclusion"]
+pages=["Introduction", "Exploration", "Preprocessing", "Modélisation", "Résultats", "Analyse et Conclusion"]
 page=st.sidebar.radio("Aller vers", pages)
 # Sidebar : Informations complémentaires
 
@@ -219,7 +219,113 @@ if page == pages[3]:
     display_complete_modeling()
 
 if page == pages[4]:
-    st.write("### Résultat Gilles 2025 10 01") 
+    st.write("### Résultats") 
+
+    st.markdown("""
+    Cette section présente l'analyse des performances de notre modèle de classification des radiographies pulmonaires.
+    Nous évaluerons les résultats à travers trois outils complémentaires permettant une compréhension approfondie 
+    des capacités et des limites du modèle.
+    """)
+    
+    # Section 1 : Présentation des métriques d'évaluation
+    st.header("1. Métriques d'évaluation")
+    
+    st.subheader("Matrice de confusion")
+    st.markdown("""
+    Comme nous l'avons vu, la **matrice de confusion** est un outil fondamental qui permet de :
+    - **Évaluer les performances** du modèle de classification en comparant les valeurs prédites aux valeurs réelles
+    - **Identifier les types d'erreurs** commises par le modèle :
+        - **Faux négatifs** : cas pathologiques non détectés (risque médical élevé)  
+        - **Faux positifs** : cas sains incorrectement classés comme pathologiques
+    - **Comprendre les confusions** entre classes similaires (ex: COVID-19 vs Pneumonie)
+    """)
+        
+
+# Initialiser l'état du bouton si nécessaire
+if 'show_confusion_matrix' not in st.session_state:
+    st.session_state.show_confusion_matrix = False
+
+# Bouton toggle
+if st.button("Afficher / Masquer un exemple de matrice de confusion"):
+    st.session_state.show_confusion_matrix = not st.session_state.show_confusion_matrix
+
+# Affichage conditionnel
+if st.session_state.show_confusion_matrix:
+    st.markdown("""
+        - **Faux négatifs** (encadré en 🟡) : cas pathologiques non détectés
+        - **Faux positifs** (encadré en 🔴) : cas sains incorrectement classés comme pathologiques
+    """)
+    img_path = "images/Exemple Matrice colorée.png"
+    img = Image.open(img_path)
+    st.image(img, caption="Matrice de confusion du modèle", use_container_width=True)
+
+st.markdown("---")
+# Espace pour afficher la matrice de confusion
+st.info("💡 La matrice de confusion sera affichée ci-dessous pour chaque stratégie testée")
+
+st.markdown("---")
+
+st.subheader("F1-Score")
+
+# Initialiser l'état du bouton si nécessaire
+if 'show_f1_details' not in st.session_state:
+    st.session_state.show_f1_details = False
+
+# Bouton pour afficher/masquer les explications
+if st.button("Afficher / Masquer les explications sur le F1-Score"):
+    st.session_state.show_f1_details = not st.session_state.show_f1_details
+
+# Afficher les explications si l'état est True
+if st.session_state.show_f1_details:
+    st.markdown("""
+    Le **F1-score** représente la *moyenne harmonique* entre la **Précision** et le **Rappel** :
+    
+    ---
+    
+    **Précision** : Rapport entre le nombre de vrais positifs et le nombre total de positifs prédits
+    - *Mesure la fiabilité des prédictions positives*
+    - Formule : `Précision = VP / (VP + FP)`
+    
+    **Rappel** : Rapport entre le nombre de vrais positifs et le nombre total de positifs réels
+    - *Mesure la capacité à détecter tous les cas positifs*
+    - Formule : `Rappel = VP / (VP + FN)`
+    
+    ---
+    
+    **F1-Score** : `F1 = 2 × (Précision × Rappel) / (Précision + Rappel)`
+    
+    Le F1-score est compris entre **0 et 1** :
+    - Plus il est proche de **1**, meilleurs sont le Rappel et la Précision
+    - Il est particulièrement utile en cas de déséquilibre des classes
+    - En contexte médical, un F1-score élevé garantit un bon compromis entre détection et fiabilité
+    """)
+
+
+# Tableau de synthèse des F1-scores
+st.markdown("####Synthèse des F1-Scores")
+
+
+st.markdown("---")
+
+# Section 2 : GradCAM
+st.header("2. Visualisation par GradCAM")
+
+st.markdown("""
+Le **GradCAM** (Gradient-weighted Class Activation Mapping) est une technique de visualisation qui révèle 
+les zones d'une image ayant le plus influencé la décision du réseau de neurones.
+
+#### Principe et utilité
+- Permet de comprendre *pourquoi* le modèle a pris telle décision
+- Vérifie que le modèle se concentre sur les bonnes zones anatomiques
+- Identifie si le modèle utilise des artefacts non pertinents
+- Renforce la confiance des praticiens dans les prédictions du modèle
+
+#### Interprétation des cartes de chaleur
+- **Zones rouges/chaudes** : Régions ayant fortement influencé la prédiction
+- **Zones bleues/froides** : Régions peu ou pas considérées par le modèle
+""")
+
+  
 
 if page == pages[5]:
     st.write("### Analyse et Conclusion")
