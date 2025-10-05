@@ -64,11 +64,13 @@ def display_exploration():
     for i, class_name in enumerate(classes):
         with cols[i]:
             st.subheader(class_name)
-            # Remplacez par le chemin réel de vos images
             img_path = f"images/{class_name}/{filename}-1.png"
             if os.path.exists(img_path):
                 img = Image.open(img_path)
-                st.image(img, caption=f"{class_name} (299x299)", use_container_width=True)
+                if class_name == "radiography":
+                    st.image(img, caption=f"{class_name} (299x299)", use_container_width=True)
+                else:  # mask
+                    st.image(img, caption=f"{class_name} (256x256)", use_container_width=True)
             else:
                 st.write("Image non disponible")
 
@@ -109,7 +111,7 @@ def display_exploration():
     # Section 6 : Réduction de dimension et clustering
     st.header("6. Réduction de dimension et clustering")
     st.markdown("""
-    - **Réduction** : Passage de 256x256 à 199x199 pixels, puis application de PCA/UMAP.
+    - **Réduction** : Passage de 256x256, puis application de PCA/UMAP.
     - **Clustering** : K-Means sur 54 composantes principales (90% de variance expliquée).
     - **Résultat** : Coefficient de silhouette moyen = 0.1455 → clusters peu distincts.
     """)
