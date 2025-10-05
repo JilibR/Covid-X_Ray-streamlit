@@ -4,10 +4,8 @@ import matplotlib.pyplot as plt
 from utils.modelisation import display_complete_modeling
 from utils.introduction import display_intro
 from utils.exploration import display_exploration
-import numpy as np
-import pandas as pd
-import os
-import seaborn as sns
+from utils.preprocessing import preprocessing_covid
+
 
 st.title("Deep X-Vision Project")
 st.sidebar.title("Sommaire")
@@ -35,6 +33,7 @@ if page == pages[1]:
 
 if page == pages[2]:
     st.write("### Preprocessing")
+    preprocessing_covid()
 
 if page == pages[3]:
     st.write("### Modelisation")
