@@ -12,45 +12,6 @@ def preprocessing_covid():
     encodage_schemas()
     schemas_two_steps()
 
-def schemas_two_steps():
-    st.subheader("Pipeline de Classification COVID-19")
-
-    fig, ax = plt.subplots(figsize=(7, 10))
-
-    # --- Définition des étapes ---
-    steps = {
-        "step1": ("Etape 1 : Malade / Non malade", (2, 8), "lightgray", 3, 1.0),   # ligne 1
-        "malade": ("Malade", (3.5, 6), "salmon", 2, 0.8),                # ligne 2 gauche
-        "non_malade": ("Non malade", (0.5, 6), "lightgreen", 2, 0.8),    # ligne 2 droite
-        "step2": ("Étape 2 : Covid / Non Covid", (3.5, 4.5), "lightblue", 3, 1.0),  # ligne 3
-        "covid": ("Covid", (2.5, 3), "red", 2, 0.8),                     # ligne 4 gauche
-        "non_covid": ("Non Covid", (4.5, 3), "skyblue", 2, 0.8),         # ligne 4 droite
-    }
-
-    # --- Dessiner les rectangles ---
-    for key, (label, (x, y), color, w, h) in steps.items():
-        ax.add_patch(mpatches.FancyBboxPatch((x, y), w, h,
-                                            boxstyle="round,pad=0.2",
-                                            fc=color, ec="black", lw=1.5))
-        ax.text(x + w/2, y + h/2, label, ha="center", va="center", fontsize=10, weight="bold")
-
-    # --- Flèches (descendantes entre les étapes) ---
-    # Ligne 1 -> Ligne 2 (vers "Malade")
-    ax.annotate("", xy=(4.5, 8), xytext=(4.5, 7), arrowprops=dict(arrowstyle="<-"))
-
-    # Ligne 2 Malade -> Ligne 3
-    ax.annotate("", xy=(4.5, 6), xytext=(4.5, 5.5), arrowprops=dict(arrowstyle="<-"))
-
-    # Ligne 3 -> Ligne 4 (Covid & Non Covid)
-    ax.annotate("", xy=(3.5, 4.5), xytext=(3.5, 3.8), arrowprops=dict(arrowstyle="<-"))
-    ax.annotate("", xy=(5.5, 4.5), xytext=(5.5, 3.8), arrowprops=dict(arrowstyle="<-"))
-
-    # --- Ajustements ---
-    ax.set_xlim(0, 7)
-    ax.set_ylim(2, 9.5)
-    ax.axis("off")
-
-    st.pyplot(fig)
 
 
 def presention_preprocessing():
@@ -79,37 +40,6 @@ def presention_preprocessing():
     **Pourquoi c'est important ?**
     Ces étapes permettent d'optimiser la taille des données, de réduire la complexité des calculs
     et d'améliorer les performances du modèle de classification.
-    """)
-
-def encodage_schemas():
-
-    st.title("Stratégie de classification en deux étapes")
-    st.markdown("""
-    Cette section détaille la méthode utilisée pour classer les patients en deux étapes successives.
-    La première étape de eéparation des patients en deux groupes (malade/non-malade) Puis la 
-    classification parmi les malades, classification en COVID/Non-COVID
-    """)
-
-    st.header("1. Première étape : Malade vs Non-malade")
-    st.markdown("""
-    **Encodage :**
-    - **1** pour les patients **malades**
-    - **0** pour les patients **non-malades**
-    """)
-    st.code("""
-    # Exemple d'encodage pour la première étape
-    labels_etape_1 = {"malade": 1, "non-malade": 0}
-    """)
-
-    st.header("2. Deuxième étape : COVID vs Non-COVID (pour les malades uniquement)")
-    st.markdown("""
-    **Encodage (appliqué uniquement aux patients classés comme malades) :**
-    - **1** pour les patients **COVID**
-    - **0** pour les patients **non-COVID**
-    """)
-    st.code("""
-    # Exemple d'encodage pour la deuxième étape (uniquement pour les malades)
-    labels_etape_2 = {"covid": 1, "non-covid": 0}
     """)
 
     
@@ -176,3 +106,76 @@ def normalisation():
         st.image(img, caption=f"Exemple du résultat du préprocessing", use_container_width=True)
     else:
         st.write("Image fin_preprocessing non disponible")
+
+
+def encodage_schemas():
+
+    st.title("Stratégie de classification en deux étapes")
+    st.markdown("""
+    Cette section détaille la méthode utilisée pour classer les patients en deux étapes successives.
+    La première étape de eéparation des patients en deux groupes (malade/non-malade) Puis la 
+    classification parmi les malades, classification en COVID/Non-COVID
+    """)
+
+    st.header("1. Première étape : Classification Binaire Malade vs Non-malade")
+    st.markdown("""
+    **Encodage :**
+    - **1** pour les patients **malades**
+    - **0** pour les patients **non-malades**
+    """)
+    st.code("""
+    # Exemple d'encodage pour la première étape
+    labels_etape_1 = {"malade": 1, "non-malade": 0}
+    """)
+
+    st.header("2. Deuxième étape : Classification Multiclasses COVID, Opacité, Pneumonie ")
+    st.markdown("""
+    **Encodage (appliqué uniquement aux patients classés comme malades) :**
+    - **1** pour les patients **COVID**
+    - **0** pour les patients **non-COVID**
+    """)
+    st.code("""
+    # Exemple d'encodage pour la deuxième étape (uniquement pour les malades)
+    labels_etape_2 = {"covid": 0, "opacité": 1,"pneumonie": 2}
+    """)
+
+
+def schemas_two_steps():
+    st.subheader("Pipeline de Classification COVID-19")
+
+    fig, ax = plt.subplots(figsize=(7, 10))
+
+    # --- Définition des étapes ---
+    steps = {
+        "step1": ("Etape 1 : Malade / Non malade", (2, 8), "lightgray", 3, 1.0),   # ligne 1
+        "malade": ("Malade", (3.5, 6), "salmon", 2, 0.8),                # ligne 2 gauche
+        "non_malade": ("Non malade", (0.5, 6), "lightgreen", 2, 0.8),    # ligne 2 droite
+        "step2": ("Étape 2 : Covid / Non Covid", (3.5, 4.5), "lightblue", 3, 1.0),  # ligne 3
+        "covid": ("Covid", (2.5, 3), "red", 2, 0.8),                     # ligne 4 gauche
+        "non_covid": ("Non Covid", (4.5, 3), "skyblue", 2, 0.8),         # ligne 4 droite
+    }
+
+    # --- Dessiner les rectangles ---
+    for key, (label, (x, y), color, w, h) in steps.items():
+        ax.add_patch(mpatches.FancyBboxPatch((x, y), w, h,
+                                            boxstyle="round,pad=0.2",
+                                            fc=color, ec="black", lw=1.5))
+        ax.text(x + w/2, y + h/2, label, ha="center", va="center", fontsize=10, weight="bold")
+
+    # --- Flèches (descendantes entre les étapes) ---
+    # Ligne 1 -> Ligne 2 (vers "Malade")
+    ax.annotate("", xy=(4.5, 8), xytext=(4.5, 7), arrowprops=dict(arrowstyle="<-"))
+
+    # Ligne 2 Malade -> Ligne 3
+    ax.annotate("", xy=(4.5, 6), xytext=(4.5, 5.5), arrowprops=dict(arrowstyle="<-"))
+
+    # Ligne 3 -> Ligne 4 (Covid & Non Covid)
+    ax.annotate("", xy=(3.5, 4.5), xytext=(3.5, 3.8), arrowprops=dict(arrowstyle="<-"))
+    ax.annotate("", xy=(5.5, 4.5), xytext=(5.5, 3.8), arrowprops=dict(arrowstyle="<-"))
+
+    # --- Ajustements ---
+    ax.set_xlim(0, 7)
+    ax.set_ylim(2, 9.5)
+    ax.axis("off")
+
+    st.pyplot(fig)
