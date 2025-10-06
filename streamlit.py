@@ -35,9 +35,18 @@ if page == pages[2]:
     st.write("### Preprocessing")
     preprocessing_covid()
 
-if page == pages[3]:
-    st.write("### Modelisation")
-
+elif page == pages[3]:
+    st.write("### Modélisation")
+    
+    with st.expander("ℹ️ À propos de cette section", expanded=False):
+        st.markdown("""
+        Cette section présente les différentes approches de modélisation testées dans le projet :
+        - **Stratégies de classification** : différentes approches (multiclasses, binaire, hiérarchique)
+        - **Architectures** : modèles CNN utilisés (Transfer Learning et From Scratch)
+        - **Paramètres** : hyperparamètres d'entraînement
+        - **Métriques** : méthodes d'évaluation des performances
+        """)
+    
     display_complete_modeling()
 
 if page == pages[4]:
