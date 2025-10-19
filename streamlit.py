@@ -386,12 +386,16 @@ if page == pages[5]:
     """)
     
     st.markdown("""
-    Comme piste d'amélioration, nous pourrions conforter nos résultats en calculant la matrice de confusion globale
+    Comme piste d'amélioration, nous aimerions conforter nos résultats en calculant la matrice de confusion globale
     et le F1-score global plutôt qu'en les reconstituant.
     """)
 
     st.markdown("""
-    - **La stratégie en 2 étapes s'aligne avec la pratique clinique**, car souvent le radiologue 
+    - **La stratégie en 2 étapes, multi classe parmi les malades, produit un F1-scode pour le COVID très intéressant (89,8 %)**
+    """)
+
+    st.markdown("""
+    - **Cette stratégie en 2 étapes s'aligne avec la pratique clinique**, car souvent le radiologue 
     se demande *d'abord* s'il y a des anomalies sur la radiographie laissant penser que le 
     patient est malade (étape 1), puis, s'il y a des signes de pathologies pulmonaires, 
     quelle est cette maladie (étape 2 de la stratégie). On voit bien l'avantage de cette 
